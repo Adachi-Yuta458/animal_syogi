@@ -19,9 +19,7 @@ class Game
       @display.reflesh
       puts "#{@current_player.name}の番です"
       puts "入力してください"
-      puts "入力してください"
 
-      puts "入力してください"
 
       input = gets.chomp
       input_1, input_2 = input.split(',')
