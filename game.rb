@@ -19,9 +19,6 @@ class Game
       @display.reflesh
       puts "#{@current_player.name}の番です"
       puts "入力してください"
-      puts "入力してください"
-      puts "入力してください"
-      puts "入力してください"
 
 
       input = gets.chomp
