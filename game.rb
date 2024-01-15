@@ -34,7 +34,10 @@ class Game
         game_over = @board.place_from_captured_pieces(move_to, @current_player)
       end
 
-      break if game_over
+      if game_over
+        break
+      else
+      end
 
       change_turns
     end
