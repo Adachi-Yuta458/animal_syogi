@@ -16,8 +16,10 @@ jobs:
     name: Run PR Agent
     if: ${{ github.event.sender.type != 'Bot' }}
     steps:
-      - id: pr-agent
-        uses: Codium-ai/pr-agent@main
-        env:
-          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Set LANCEDB_CONFIG_DIR
+      run: echo "LANCEDB_CONFIG_DIR=/tmp" >> $GITHUB_ENV
+    - id: pr-agent
+      uses: Codium-ai/pr-agent@main
+      env:
+        OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
