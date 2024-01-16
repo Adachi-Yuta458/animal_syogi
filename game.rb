@@ -43,6 +43,20 @@ class Game
     end
   end
 
+  def valid_place?(move_to)
+    if @board.board[move_to.x][move_to.y]
+      puts '駒があります'
+
+      false
+    elsif @current_player.search_piece(move_to.piece).nil?
+      puts '入力された駒を持っていません'
+
+      false
+    else
+      true
+    end
+  end
+
   private
 
   def change_turns
