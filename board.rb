@@ -13,27 +13,19 @@ class Board
     setup_board(player_1, player_2)
   end
 
-  def move_piece(move_from, move_to, player)
-    game_over = false
+  def from_board_to_board(pointer_1, pointer_2, player)
+    from_piece = @board[pointer_1.x][pointer_1.y]
+    to_piece = @board[pointer_2.x,][pointer_2.y]
 
-    if @board[move_to.x][move_to.y]
-      game_over = get_piece(@board[move_to.x][move_to.y], player)
-      set_piece(@board[move_from.x][move_from.y], move_to.x, move_to.y)
-      set_piece(nil, move_from.x, move_from.y)
-    else
-      set_piece(@board[move_from.x][move_from.y], move_to.x, move_to.y)
-      set_piece(nil, move_from.x, move_from.y)
-    end
-
-    game_over
+    get_piece(to_piece, player) if to_piece
+    set_piece(from_piece, pointer_2.x, pointer_2.y)
+    set_piece(nil, pointer_1.x, pointer_1.y)
   end
 
-  def place_from_captured_pieces(move_to, player)
-    piece = player.search_piece(move_to.piece)
-    set_piece(piece, move_to.x, move_to.y)
-    player.remove_piece(move_to.piece)
-
-    false
+  def from_captured_to_board(pointer, player)
+    piece = player.search_piece(pointer.piece)
+    set_piece(piece, pointer.x, pointer.y)
+    player.remove_captured_piece(pointer.piece)
   end
 
   private
@@ -54,15 +46,7 @@ class Board
   end
 
   def get_piece(piece, player)
-    if piece.symbol == 'L' || piece.symbol == 'l'
-      puts "#{player.name}の勝ちです"
-
-      true
-    else
-      piece.opposite(player)
-      player.add_captured_piece(piece)
-
-      false
-    end
+    piece.opposite(player)
+    player.add_captured_piece(piece)
   end
 end

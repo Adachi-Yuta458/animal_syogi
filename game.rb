@@ -2,48 +2,54 @@ require './board'
 require './display'
 require './player'
 require './piece'
-require './input'
+require './pointer'
+require './mover'
 
+# ゲームの進行を管理するクラス
 class Game
   def initialize(player_1, player_2)
-    @player_1 = Player.new(player_1, true)
-    @player_2 = Player.new(player_2, false)
+    @player_1 = Player.new(player_1)
+    @player_2 = Player.new(player_2)
     @current_player = @player_1
+    @player_1.first_player = true
     @board = Board.new(@player_1, @player_2)
     @display = Display.new(@board, @player_1, @player_2)
-    @move_validator = MoveValidator.new(@board)
   end
 
   def play
     loop do
       @display.reflesh
-      puts "#{@current_player.name}の番です"
-      puts "入力してください"
-      input = gets.chomp
-      input_1, input_2 = input.split(',')
-      if input_2
-        move_from = Input.parse(input_1)
-        move_to = Input.parse(input_2)
-        next unless move_validator.valid_move?(move_from, move_to)
+      pointer_1, pointer_2 = accept_input
+      mover = Mover.new(@board, @current_player)
+      next unless mover.valid_moving?(pointer_1, pointer_2)
 
-        game_over = @board.move_piece(move_from, move_to, @current_player)
-      else
-        move_to = Input.parse(input_1)
-        next unless move_validator.valid_place?(move_to)
+      mover.move(pointer_1, pointer_2)
 
-        game_over = @board.place_from_captured_pieces(move_to, @current_player)
-      end
-
-      if game_over
-        break
-      else
-      end
+      break if game_over?
 
       change_turns
     end
   end
 
   private
+
+  def accept_input
+    puts "#{@current_player.name}の番です"
+    puts "入力してください"
+    input = gets.chomp
+
+    input.split(',').map { |i| Pointer.new(i, @board) }
+  end
+
+  def game_over?
+    if @current_player.captured_pieces.any? { |piece| piece.symbol == 'L' || piece.symbol == 'l'}
+      puts "#{current_player.name}の勝ちです"
+
+      true
+    else
+      false
+    end
+  end
 
   def change_turns
     @current_player = @current_player == @player_1 ? @player_2 : @player_1

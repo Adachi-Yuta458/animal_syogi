@@ -1,10 +1,11 @@
 class Player
-  attr_reader :name, :captured_pieces
+  attr_reader :name
+  attr_accessor :captured_pieces, :first_player
 
-  def initialize(name, first_player = false)
+  def initialize(name)
     @name = name
     @captured_pieces = []
-    @first_player = first_player
+    @first_player = false
   end
 
   def add_captured_piece(piece)
