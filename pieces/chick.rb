@@ -1,23 +1,12 @@
 require './piece'
 
 class Chick < Piece
-  def possible_moves(move_from)
-    if player.first_player
-      move = [move_from.x, move_from.y - 1]
-
-      if move_from.y < 0
-        puts 'これ以上駒を進めることができません'
-      else
-        move
-      end
+  def possible_moves(x, y)
+    if @player.first_player
+      p y-1 < 0
+      y - 1 < 0 ? [] : [[x, y - 1]]
     else
-      move = [move_from.x, move_from.y + 1]
-
-      if move_from.y > 3
-        puts 'これ以上駒を進めることができません'
-      else
-        move
-      end
+      y + 1 > 3 ? [] : [[x, y + 1]]
     end
   end
 end

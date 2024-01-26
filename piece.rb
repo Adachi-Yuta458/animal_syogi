@@ -11,7 +11,7 @@ class Piece
     @player = player
   end
 
-  def possible_moves(move_from)
+  def possible_moves(x, y)
     raise NotImplementedError
   end
 end
