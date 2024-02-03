@@ -3,8 +3,7 @@ require './pointer'
 
 class MoverFromBoard
   def initialize(board, current_player)
-    @board = board
-    @current_player = current_player
+    super(board, current_player)
   end
 
   def move(pointer_1, pointer_2)
@@ -39,11 +38,6 @@ class MoverFromBoard
   end
 
   private
-
-  def get_piece(piece)
-    piece.opposite(@current_player)
-    @current_player.add_captured_piece(piece)
-  end
 
   def immovable_range?(pointer_1, pointer_2)
     !(animal_range(pointer_1.point, pointer_1).include?([pointer_2.x, pointer_2.y]))
