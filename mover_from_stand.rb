@@ -3,8 +3,7 @@ require './pointer'
 
 class Mover
   def initialize(board, current_player)
-    @board = board
-    @current_player = current_player
+    super(board, current_player)
   end
 
   def move(pointer_1, _pointer_2)
@@ -25,12 +24,5 @@ class Mover
     else
       true
     end
-  end
-
-  private
-
-  def get_piece(piece)
-    piece.opposite(@current_player)
-    @current_player.add_captured_piece(piece)
   end
 end
