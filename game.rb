@@ -20,7 +20,7 @@ class Game
     loop do
       @display.reflesh
       pointer_1, pointer_2 = accept_input
-      mover = Mover.new(@board, @current_player)
+      mover = pointer_2.nil? ? MoverFromStand.new(@board, @current_player) : MoverFromBoard.new(@board, @current_player)
       next unless mover.valid_moving?(pointer_1, pointer_2)
 
       mover.move(pointer_1, pointer_2)

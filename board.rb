@@ -13,21 +13,6 @@ class Board
     setup_board(player_1, player_2)
   end
 
-  def from_board_to_board(pointer_1, pointer_2, player)
-    from_piece = @board[pointer_1.x][pointer_1.y]
-    to_piece = @board[pointer_2.x,][pointer_2.y]
-
-    get_piece(to_piece, player) if to_piece
-    set_piece(from_piece, pointer_2.x, pointer_2.y)
-    set_piece(nil, pointer_1.x, pointer_1.y)
-  end
-
-  def from_captured_to_board(pointer, player)
-    piece = player.search_piece(pointer.piece)
-    set_piece(piece, pointer.x, pointer.y)
-    player.remove_captured_piece(pointer.piece)
-  end
-
   private
 
   def setup_board(player_1, player_2)
@@ -43,10 +28,5 @@ class Board
 
   def set_piece(piece, x, y)
     @board[x][y] = piece
-  end
-
-  def get_piece(piece, player)
-    piece.opposite(player)
-    player.add_captured_piece(piece)
   end
 end

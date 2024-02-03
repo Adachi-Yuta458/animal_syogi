@@ -1,31 +1,22 @@
 require './piece'
 require './pointer'
 
-class Mover
+class MoverFromBoard
   def initialize(board, current_player)
     @board = board
     @current_player = current_player
   end
 
   def move(pointer_1, pointer_2)
-    if pointer_2.nil?
-      @board.from_captured_to_board(pointer_1, @current_player)
-    else
-      @board.from_board_to_board(pointer_1, pointer_2, @current_player)
-    end
+    from_piece = @board[pointer_1.x][pointer_1.y]
+    to_piece = @board[pointer_2.x,][pointer_2.y]
+
+    get_piece(to_piece) if to_piece
+    @board.set_piece(from_piece, pointer_2.x, pointer_2.y)
+    @board.set_piece(nil, pointer_1.x, pointer_1.y)
   end
 
   def valid_moving?(pointer_1, pointer_2)
-    if pointer_2.nil?
-      by_captured(pointer_1)
-    else
-      by_board(pointer_1, pointer_2)
-    end
-  end
-
-  private
-
-  def by_board(pointer_1, pointer_2)    
     if pointer_1.point.nil?
       puts '駒がありません'
 
@@ -47,18 +38,11 @@ class Mover
     end
   end
 
-  def by_captured(pointer_1)
-    if pointer_1.point
-      puts '入力された場所にはすでに駒があります'
+  private
 
-      false
-    elsif @current_player.search_piece(input.piece).nil?
-      puts '入力された駒を駒台に持っていません'
-
-      false
-    else
-      true
-    end
+  def get_piece(piece)
+    piece.opposite(@current_player)
+    @current_player.add_captured_piece(piece)
   end
 
   def immovable_range?(pointer_1, pointer_2)

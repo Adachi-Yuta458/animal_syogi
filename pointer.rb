@@ -1,11 +1,11 @@
 class Pointer
   attr_accessor :x, :y, :piece, :point
 
-  def initialize(input, board)
+  def initialize(input)
     parse(input)
-    @board = board
-    @point = @board.board[@x][@y]
   end
+
+  private
 
   def parse(input)
     case input[0]
@@ -17,6 +17,6 @@ class Pointer
       @x = 2
     end
     @y = input[1].to_i - 1
-    @piece = input[2]
+    @symbol = input[2]
   end
 end
