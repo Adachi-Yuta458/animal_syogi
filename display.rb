@@ -20,6 +20,6 @@ class Display
   private
 
   def draw_piece(x, y)
-    @board.board[x][y] ? @board.board[x][y].symbol : ' '
+    @board.grid[x][y] ? @board.grid[x][y].symbol : ' '
   end
 end

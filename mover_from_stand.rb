@@ -1,24 +1,24 @@
-require './piece'
-require './pointer'
+require_relative 'piece'
+require_relative 'pointer'
 
-class Mover
+class MoverFromStand
   def initialize(board, current_player)
     @board = board
     @current_player = current_player
   end
 
-  def move(pointer_1, _pointer_2)
-    piece = player.search_piece(pointer_1.piece)
-    @board.set_piece(piece, pointer.x, pointer.y)
-    player.remove_captured_piece(pointer_1.piece)
+  def move(to, _)
+    to_piece = @current_player.search_piece(to.symbol)
+    @board.set_piece(piece(to), to.x, to.y)
+    @current_player.remove_piece(to.symbol)
   end
 
-  def valid_moving?(pointer_1, _pointer_2)
-    if pointer_1.point
+  def valid_moving?(to, _)
+    if @board.grid[to.x][to.y]
       puts '入力された場所にはすでに駒があります'
 
       false
-    elsif @current_player.search_piece(input.piece).nil?
+    elsif @current_player.search_piece(to.symbol).nil?
       puts '入力された駒を駒台に持っていません'
 
       false
@@ -29,8 +29,7 @@ class Mover
 
   private
 
-  def get_piece(piece)
-    piece.opposite(@current_player)
-    @current_player.add_captured_piece(piece)
+  def piece(point)
+    @board.grid[point.x][point.y]
   end
 end

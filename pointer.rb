@@ -1,5 +1,5 @@
 class Pointer
-  attr_accessor :x, :y, :piece, :point
+  attr_accessor :x, :y, :symbol
 
   def initialize(input)
     parse(input)
