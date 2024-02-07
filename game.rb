@@ -3,6 +3,7 @@ require_relative 'display'
 require_relative 'mover_from_board'
 require_relative 'mover_from_stand'
 require_relative 'player'
+require_relative 'notation'
 
 # ゲームの進行を管理するクラス
 class Game
@@ -13,6 +14,7 @@ class Game
     @player_1.first_player = true
     @board = Board.new(@player_1, @player_2)
     @display = Display.new(@board, @player_1, @player_2)
+    @notation = Notation.new
   end
 
   def play
@@ -23,6 +25,7 @@ class Game
       next unless mover.valid_moving?(from, to)
 
       mover.move(from, to)
+      @notation.record(@current_player, from.serialize, to&.serialize)
 
       break if game_over?
 
@@ -42,7 +45,8 @@ class Game
 
   def game_over?
     if @current_player.captured_pieces.any? { |piece| piece.symbol == 'L' || piece.symbol == 'l'}
-      puts "#{current_player.name}の勝ちです"
+      puts "#{@current_player.name}の勝ちです"
+      @notation.output
 
       true
     else
