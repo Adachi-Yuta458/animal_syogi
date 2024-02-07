@@ -5,6 +5,13 @@ class Pointer
     parse(input)
   end
 
+  def serialize
+    col = ('A'.ord + @x).chr
+    row = (@y + 1).to_s
+
+    "#{col}#{row}#{@symbol}"
+  end
+
   private
 
   def parse(input)
