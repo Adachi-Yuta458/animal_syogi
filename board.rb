@@ -1,16 +1,19 @@
 require_relative 'piece'
-require './pieces/elephant'
-require './pieces/giraffe'
-require './pieces/lion'
-require './pieces/chick'
-
+require_relative 'pieces/elephant'
+require_relative 'pieces/lion'
+require_relative 'pieces/giraffe'
+require_relative 'pieces/chick'
 
 class Board
-  attr_accessor :board
+  attr_accessor :grid
 
   def initialize(player_1, player_2)
-    @board = Array.new(3) { Array.new(4) }
+    @grid = Array.new(3) { Array.new(4) }
     setup_board(player_1, player_2)
+  end
+
+  def set_piece(piece, x, y)
+    @grid[x][y] = piece
   end
 
   private
@@ -24,9 +27,5 @@ class Board
     set_piece(Giraffe.new('G', player_1), 0, 3)
     set_piece(Lion.new('L', player_1), 1, 3)
     set_piece(Elephant.new('E', player_1), 2, 3)
-  end
-
-  def set_piece(piece, x, y)
-    @board[x][y] = piece
   end
 end

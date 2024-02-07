@@ -1,9 +1,8 @@
-require './board'
-require './display'
-require './player'
-require './piece'
-require './pointer'
-require './mover'
+require_relative 'board'
+require_relative 'display'
+require_relative 'mover_from_board'
+require_relative 'mover_from_stand'
+require_relative 'player'
 
 # ゲームの進行を管理するクラス
 class Game
@@ -19,11 +18,11 @@ class Game
   def play
     loop do
       @display.reflesh
-      pointer_1, pointer_2 = accept_input
-      mover = pointer_2.nil? ? MoverFromStand.new(@board, @current_player) : MoverFromBoard.new(@board, @current_player)
-      next unless mover.valid_moving?(pointer_1, pointer_2)
+      from, to = accept_input
+      mover = to.nil? ? MoverFromStand.new(@board, @current_player) : MoverFromBoard.new(@board, @current_player)
+      next unless mover.valid_moving?(from, to)
 
-      mover.move(pointer_1, pointer_2)
+      mover.move(from, to)
 
       break if game_over?
 
@@ -38,7 +37,7 @@ class Game
     puts "入力してください"
     input = gets.chomp
 
-    input.split(',').map { |i| Pointer.new(i, @board) }
+    input.split(',').map { |i| Pointer.new(i) }
   end
 
   def game_over?
